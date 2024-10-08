@@ -151,6 +151,7 @@ export default function App() {
   return (
    <div>
     <Navbar />
+    <InventoryList />
    </div>
   );
 }
@@ -173,5 +174,9 @@ function Navbar(){
 
 
 function InventoryList(){
-return ;
+return (<div>
+  <select>
+    <option>1</option>
+  </select>
+</div>);
 }
