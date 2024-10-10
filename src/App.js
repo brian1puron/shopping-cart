@@ -21,8 +21,8 @@ function Navbar(){
       <nav  className="navbar">
        <h1>Puron's Shop</h1>
       <div>
+      <input  placeholder="Search..." className="searchBar" type="text" />
         <button className="searchButton">🔎</button>
-      <input className="searchBar" type="text" />
      
       </div>
       <button className="button">🛒X</button>

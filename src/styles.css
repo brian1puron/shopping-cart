@@ -23,22 +23,35 @@ body{
   }
 
   .searchButton{
-    background-color: rgb(242, 171, 171);
+    position: absolute;
+    background-color: rgb(239, 222, 222);
+    border-radius: 50%;
     border: 0;
     padding: 5px;
-      }
+    
+    margin-top: 3.5px;
+    margin-left: -35px;
+     }
 
   .searchButton:hover{
     border-radius: 50%;
-    background-color: rgb(239, 222, 222);
+    background-color:  rgb(242, 171, 171);
     cursor: pointer;
+
   }
 
+  
   .searchBar{
     width: 300px;
-    margin-right: 60px;
-    margin-left: 5px;
-    background-color:rgb(239, 222, 222);;
+    padding-left: 180px;
+    
+    border-radius: 16px;
+    background-color:rgb(239, 222, 222);
+    border: none;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: black;
+    outline: 0;
 
   }
   
@@ -48,8 +61,6 @@ body{
 
     cursor: pointer;
     background-color: rgb(255, 177, 177);
-    border-top-left-radius: 1em;
-    border-bottom-right-radius: 1em;
     border-radius: 16px;
     border: none;
     color: rgb(255, 255, 255);
