@@ -1,87 +1,106 @@
 import { useState } from "react";
 import { inventoryItems } from "./array";
 
-
 export default function App() {
   
-  const [curQuantity, setQuantity] = useState(0)
+  const [cart, setCart] = useState([]); // State to store cart items
+
+  // Function to add items to the cart
+  function onClickCart(item, quantity) {
+
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+      if (existingItem) {
+        // Update quantity if the item already exists
+        return prevCart.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + quantity }
+            : cartItem
+        );
+      } else {
+        // Add new item to the cart
+        return [...prevCart, { ...item, quantity }];
+      }
+    });
+  }
+
+
+
+
+
 
   return (
     <div>
-      <Navbar />
-      <InventoryList curQuantity={curQuantity} />
+      <Navbar cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)} />
+      <InventoryList inventoryItems={inventoryItems} onClickCart={onClickCart} />
     </div>
   );
 }
 
-
-function Navbar() {
-
+function Navbar({ cartCount }) {
   return (
-    <div>
-      <nav className="navbar">
-        <h1 className="logo">Puron's Shop</h1>
-        <div>
-          <input placeholder="Search..." className="searchBar" type="text" />
-          <button className="searchButton">🔎</button>
-
-        </div>
-        <Button>🛒X</Button>
-      </nav>
-    </div>
-  )
- 
+    <nav className="navbar">
+      <h1 className="logo">Puron's Shop</h1>
+      <div>
+        <input placeholder="Search..." className="searchBar" type="text" />
+        <button className="searchButton">🔎</button>
+      </div>
+      <Button>🛒 {cartCount}</Button>
+    </nav>
+  );
 }
 
-
-function InventoryList({ curQuantity }) {
-  return (<div>
+function InventoryList({ inventoryItems, onClickCart }) {
+  return (
     <ul className="list">
-      {
-        inventoryItems.map((item) => (<InventoryItem item={item} curQuantity={curQuantity} />))
-      }
+      {inventoryItems.map((item) => (
+        <InventoryItem key={item.id} item={item} onClickCart={onClickCart} />
+      ))}
     </ul>
-
-    <div className="Inventory">
-
-    </div>
-  </div>);
+  );
 }
 
+function InventoryItem({ item, onClickCart }) {
+  const [selectedQuantity, setSelectedQuantity] = useState(1); // State for selected quantity
+  const [inventory, setInventory]= useState(item.quantity);
 
-function InventoryItem({ item, curQuantity }) {
 
-  curQuantity = item.quantity;
+  function handleQuantityChange(e)
+  {
+    const newQuantity = Number(e.target.value);
+    setSelectedQuantity(newQuantity)
+    setInventory(item.quantity - newQuantity);
+  }
+
 
   return (
-    <li className="item" key={item.id}>
+    <li className="item">
       <div className="left">
         {item.description}
-    
-   
-
-      <div className="right">
-      <span>${item.price}</span>{"  "}
-        <select className="quantity">
-          {Array.from({ length: curQuantity }, (_, i) => i + 1).map((num) =>
-          (<option value={num} key={num}>
-            {num}
-          </option>))}
-        </select>
+        <div className="right">
+          <span>${item.price}</span>
+          <select
+            className="quantity"
+            value={selectedQuantity}
+            onChange={(e) => setSelectedQuantity(Number(e.target.value))}
+          >
+            {Array.from({ length: inventory }, (_, i) => i + 1).map((num) => (
+              <option value={num} key={num}>
+                {num}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      </div>
-
-      <Button>Add to Cart</Button>
+      <Button onClick={() =>{ onClickCart(item, selectedQuantity); handleQuantityChange(selectedQuantity)}}>Add to Cart</Button>
     </li>
-  )
+  );
 }
 
-
-
-function Button({ children }) {
-
+function Button({ children, onClick }) {
   return (
-    <button className="button">{children}</button>
-  )
-
+    <button onClick={onClick} className="button">
+      {children}
+    </button>
+  );
 }
