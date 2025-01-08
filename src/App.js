@@ -69,9 +69,12 @@ function InventoryItem({ item, onClickCart }) {
   {
     const newQuantity = Number(e.target.value);
     setSelectedQuantity(newQuantity)
-    setInventory(item.quantity - newQuantity);
   }
 
+    
+    function handleInventoryChange(quantity) {
+      setInventory((prevInventory) => prevInventory - quantity);
+    }
 
   return (
     <li className="item">
@@ -82,7 +85,7 @@ function InventoryItem({ item, onClickCart }) {
           <select
             className="quantity"
             value={selectedQuantity}
-            onChange={(e) => setSelectedQuantity(Number(e.target.value))}
+            onChange={handleQuantityChange}
           >
             {Array.from({ length: inventory }, (_, i) => i + 1).map((num) => (
               <option value={num} key={num}>
@@ -92,7 +95,7 @@ function InventoryItem({ item, onClickCart }) {
           </select>
         </div>
       </div>
-      <Button onClick={() =>{ onClickCart(item, selectedQuantity); handleQuantityChange(selectedQuantity)}}>Add to Cart</Button>
+      <Button onClick={() =>{ onClickCart(item, selectedQuantity); handleInventoryChange(selectedQuantity)}}>Add to Cart</Button>
     </li>
   );
 }
